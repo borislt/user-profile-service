@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace App\Application\UserProfile;
 
 use App\Domain\User\UserProfile;
-use Ramsey\Uuid\UuidInterface;
 
 interface ProfileHydratorInterface
 {
     /**
-     * @param class-string<UserProfile> $type
-     * @param UuidInterface $userId
-     * @param array<string, string> $userData
-     * @return UserProfile
+     * @param array<string, mixed> $userData
      */
-    public function hydrate(string $type, UuidInterface $userId, array $userData): UserProfile;
+    public function hydrate(UserProfile $userProfile, array $userData): UserProfile;
 }

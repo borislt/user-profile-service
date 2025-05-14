@@ -30,3 +30,14 @@ See expected response
 }
 
 ```
+
+Upstream user data sources (priority weights, mock responses) are configured in
+```text
+config/sources.yaml
+```
+
+To tests and statically analyze run
+
+```shell
+composer check
+```

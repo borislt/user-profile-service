@@ -1,0 +1,29 @@
+parameters:
+    source_urls:
+        source1: '%env(SOURCE1_URL)%'
+        source2: '%env(SOURCE2_URL)%'
+        source3: '%env(SOURCE3_URL)%'
+        source4: '%env(SOURCE4_URL)%'
+    source_weights:
+        source1:
+            email: 0
+            name: 2
+        source2:
+            name: 0
+        source3:
+            name: 1
+            avatar_url: 0
+        source4:
+            unknown: 0
+    mock_api: '%env(bool:MOCK_API)%'
+    source_stubs:
+        source1:
+            email: 'test@test.com'
+            name: 'Bar Dor'
+        source2:
+            name: 'John Foo'
+        source3:
+            name: 'John Bar'
+            avatar_url: 'https://i.pravatar.cc/300'
+        source4:
+            unknown: 'alien'

@@ -8,7 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 interface UserDataProviderInterface
 {
     /**
-     * @return array<string, array<string, string>>
+     * @return array<string, array<string, mixed>>
      */
     public function getUserData(UuidInterface $userId): array;
 }

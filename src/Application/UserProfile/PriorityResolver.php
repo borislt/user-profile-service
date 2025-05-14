@@ -13,8 +13,8 @@ readonly class PriorityResolver
     }
 
     /**
-     * @param  array<string, array<string, string>> $userData
-     * @return array<string, string>
+     * @param  array<string, array<string, mixed>> $userData
+     * @return array<string, mixed>
      */
     public function merge(array $userData): array
     {

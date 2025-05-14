@@ -53,17 +53,23 @@
         "symfony/polyfill-php81": "*"
     },
     "scripts": {
+        "test": "vendor/bin/phpunit",
+        "build": "vendor/bin/phpstan",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "composer exec phpunit"
+            "@test"
         ],
         "post-update-cmd": [
             "@auto-scripts",
-            "composer exec phpunit"
+            "@test"
+        ],
+        "check": [
+            "@test",
+            "@build"
         ]
     },
     "conflict": {

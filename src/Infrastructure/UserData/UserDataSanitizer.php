@@ -6,9 +6,8 @@ namespace App\Infrastructure\UserData;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 readonly class UserDataSanitizer
 {
@@ -28,16 +27,23 @@ readonly class UserDataSanitizer
         $result = [];
 
         foreach ($userData as $source => $data) {
-            $userDataDto = $this->denormalizer->denormalize($data, UserDataDto::class);
-            $violations = $this->validator->validate($userDataDto);
+            try {
+                $userDataDto = $this->denormalizer->denormalize($data, UserDataDto::class);
+                $violations = $this->validator->validate($userDataDto);
 
-            foreach ($violations as $violation) {
-                unset($data[$this->converter->normalize($violation->getPropertyPath())]);
-                /** @var ConstraintViolation $violation */
-                $this->logger->error($violation, ['source' => $source]);
+                foreach ($violations as $violation) {
+                    unset($data[$this->converter->normalize($violation->getPropertyPath())]);
+                    $this->logger->error($violation->getMessage(), [
+                        'source' => $source,
+                        'property' => $violation->getPropertyPath(),
+                        'value' => $violation->getInvalidValue(),
+                    ]);
+                }
+
+                $result[$source] = $data;
+            } catch (ExceptionInterface $exception) {
+                $this->logger->error($exception->getMessage());
             }
-
-            $result[$source] = $data;
         }
 
         return $result;

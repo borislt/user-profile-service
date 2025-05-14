@@ -1,5 +1,5 @@
 imports:
-    - { resource: 'source_priority.yaml' }
+    - { resource: 'sources.yaml' }
 
 services:
     _defaults:
@@ -11,33 +11,18 @@ services:
         exclude:
             - '../src/Kernel.php'
 
-    _instanceof:
-        App\Infrastructure\UserData\Api\SourceClientInterface:
-            tags: ['app.user_data_api_client']
-
-    App\Infrastructure\UserData\UserDataProvider:
+    App\Infrastructure\UserData\Api\UserDataProvider:
         arguments:
-            - !tagged_iterator app.user_data_api_client
+            $sourceUrls: '%source_urls%'
 
-    App\Infrastructure\UserData\Api\Source1Client:
+    App\Infrastructure\UserData\Api\HttpClientFactory:
         arguments:
-            - '%env(USER_DATA_SOURCE1_DOMAIN)%'
-
-    App\Infrastructure\UserData\Api\Source2Client:
-        arguments:
-            - '%env(USER_DATA_SOURCE2_DOMAIN)%'
-
-    App\Infrastructure\UserData\Api\Source3Client:
-        arguments:
-            - '%env(USER_DATA_SOURCE3_DOMAIN)%'
-
-    App\Infrastructure\UserData\Api\Source4Client:
-        arguments:
-            - '%env(USER_DATA_SOURCE4_DOMAIN)%'
+            $mockApi: '%mock_api%'
+            $sourceStubs: '%source_stubs%'
 
     Symfony\Component\Serializer\NameConverter\NameConverterInterface:
         alias: 'serializer.name_converter.camel_case_to_snake_case'
 
     App\Application\UserProfile\PriorityResolver:
         arguments:
-            $priority: '%source_priority%'
+            $priority: '%source_weights%'

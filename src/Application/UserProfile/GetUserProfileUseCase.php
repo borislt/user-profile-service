@@ -19,7 +19,7 @@ readonly class GetUserProfileUseCase
 
         $aggregatedUserData = $this->priorityResolver->merge($userData);
 
-        $userProfile = $this->hydrator->hydrate(UserProfile::class, $request->userId, $aggregatedUserData);
+        $userProfile = $this->hydrator->hydrate(new UserProfile($request->userId), $aggregatedUserData);
 
         return new GetUserProfileResponse($userProfile);
     }

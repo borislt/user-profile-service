@@ -24,7 +24,9 @@ class GetUserProfileControllerTest extends WebTestCase
             ],
         ];
 
-        $actual = json_decode($client->getResponse()->getContent(), true);
+        $content = $client->getResponse()->getContent();
+        $this->assertIsString($content);
+        $actual = json_decode($content, true);
 
         $this->assertEquals($expected, $actual);
     }

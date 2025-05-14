@@ -5,10 +5,10 @@ namespace App\Domain\User;
 
 use Ramsey\Uuid\UuidInterface;
 
-readonly class UserProfile
+class UserProfile
 {
-        public function __construct(
-        public UuidInterface $id,
+    public function __construct(
+        public readonly UuidInterface $id,
         public string $email = '',
         public string $name = '',
         public string $avatarUrl = '',
